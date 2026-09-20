@@ -49,22 +49,47 @@ void buffer::append_line(const std::string& line) {
     lines_.push_back(line);
 }
 
+// insert a line before the selected line number
+bool buffer::insert_line(std::size_t index, const std::string& line) {
+    if (index > lines_.size()) {
+        return false;
+    }
+
+    lines_.insert(lines_.begin() + static_cast<std::ptrdiff_t>(index), line);
+    return true;
+}
+
 // replace the content of a specific line by index
-void buffer::edit_line(std::size_t index, const std::string& line) {
+bool buffer::edit_line(std::size_t index, const std::string& line) {
     if (index >= lines_.size()) {
-        return;
+        return false;
     }
 
     lines_[index] = line;
+    return true;
 }
 
 // remove a specific line by index
-void buffer::remove_line(std::size_t index) {
+bool buffer::remove_line(std::size_t index) {
     if (index >= lines_.size()) {
-        return;
+        return false;
     }
 
     lines_.erase(lines_.begin() + static_cast<std::ptrdiff_t>(index));
+    return true;
+}
+
+// find every line containing the requested text
+std::vector<std::size_t> buffer::find_lines(const std::string& text) const {
+    std::vector<std::size_t> matches;
+
+    for (std::size_t i = 0; i < lines_.size(); ++i) {
+        if (lines_[i].find(text) != std::string::npos) {
+            matches.push_back(i);
+        }
+    }
+
+    return matches;
 }
 
 // return the active file path, if there is one
@@ -75,11 +100,6 @@ std::string buffer::current_file() const {
 // keep track of the file opened for the current session
 void buffer::set_current_file(const std::string& path) {
     current_file_ = path;
-}
-
-// expose the current lines for the editor
-const std::vector<std::string>& buffer::lines() const {
-    return lines_;
 }
 
 // return the current number of lines

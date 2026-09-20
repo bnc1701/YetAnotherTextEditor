@@ -20,8 +20,11 @@ private:
     void save_current_file();
     void print_buffer() const;
     void create_new_buffer();
+    void insert_line(const std::string& line_number, const std::string& text);
     void edit_line(const std::string& line_number, const std::string& new_text);
     void delete_line(const std::string& line_number);
+    void search_text(const std::string& text) const;
+    bool parse_line_number(const std::string& text, std::size_t& line_index) const;
     void quit();
 
     bool running_;

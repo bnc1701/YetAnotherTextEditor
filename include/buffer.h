@@ -13,11 +13,12 @@ public:
     bool load_file(const std::string& path);
     bool save_file(const std::string& path) const;
     void append_line(const std::string& line);
-    void edit_line(std::size_t index, const std::string& line);
-    void remove_line(std::size_t index);
+    bool insert_line(std::size_t index, const std::string& line);
+    bool edit_line(std::size_t index, const std::string& line);
+    bool remove_line(std::size_t index);
+    std::vector<std::size_t> find_lines(const std::string& text) const;
     std::string current_file() const;
     void set_current_file(const std::string& path);
-    const std::vector<std::string>& lines() const;
     std::size_t size() const;
     bool empty() const;
     void print() const;
