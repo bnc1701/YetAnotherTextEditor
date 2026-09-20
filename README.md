@@ -54,7 +54,7 @@ this produces the binary `yetanothertexteditor` in the project root
 :q             quit the editor
 ```
 
-any other line is treated as a new line of text to insert into the buffer
+any other non-empty line is treated as a new line of text to insert into the buffer
 
 ## license
 

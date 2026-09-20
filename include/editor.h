@@ -16,8 +16,8 @@ private:
     void print_help() const;
     void handle_command(const std::string& input);
     void open_file(const std::string& path);
-    void save_file(const std::string& path) const;
-    void save_current_file() const;
+    void save_file(const std::string& path);
+    void save_current_file();
     void print_buffer() const;
     void create_new_buffer();
     void quit();

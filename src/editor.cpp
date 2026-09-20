@@ -24,7 +24,7 @@ void editor::print_help() const {
     std::cout << "  :q             quit the editor\n";
 }
 
-// main editor loop
+// keep reading input until the user quits
 void editor::run() {
     print_welcome_message();
 
@@ -78,7 +78,7 @@ void editor::handle_command(const std::string& input) {
     }
 
     if (input.rfind(":save ", 0) == 0) {
-        std::string path = input.substr(6);
+        const std::string path = input.substr(6);
         if (path.empty()) {
             std::cout << "usage: :save <file>\n";
             return;
@@ -88,7 +88,7 @@ void editor::handle_command(const std::string& input) {
     }
 
     if (input.rfind(":open ", 0) == 0) {
-        std::string path = input.substr(6);
+        const std::string path = input.substr(6);
         if (path.empty()) {
             std::cout << "usage: :open <file>\n";
             return;
@@ -100,7 +100,7 @@ void editor::handle_command(const std::string& input) {
     std::cout << "unknown command, type :help for available commands\n";
 }
 
-// open a file and load it into the current session buffer
+// open a file and load it into the current buffer
 void editor::open_file(const std::string& path) {
     if (!buffer_.load_file(path)) {
         std::cout << "error: could not open file: " << path << '\n';
@@ -111,19 +111,20 @@ void editor::open_file(const std::string& path) {
     buffer_.print();
 }
 
-// save the current buffer to a specific path
-void editor::save_file(const std::string& path) const {
+// save the current buffer and remember the path for later saves
+void editor::save_file(const std::string& path) {
     if (!buffer_.save_file(path)) {
         std::cout << "error: could not save file: " << path << '\n';
         return;
     }
 
+    buffer_.set_current_file(path);
     std::cout << "saved file: " << path << '\n';
 }
 
 // save the active file if one was opened earlier
-void editor::save_current_file() const {
-    std::string current_file = buffer_.current_file();
+void editor::save_current_file() {
+    const std::string current_file = buffer_.current_file();
     if (current_file.empty()) {
         std::cout << "no file is currently open, use :save <file>\n";
         return;
@@ -137,7 +138,7 @@ void editor::print_buffer() const {
     buffer_.print();
 }
 
-// clear the current working buffer
+// clear the current working buffer and its file path
 void editor::create_new_buffer() {
     buffer_.clear();
     std::cout << "current buffer cleared\n";
