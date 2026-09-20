@@ -298,7 +298,7 @@ void editor::search_text(const std::string& text) const {
     }
 
     for (const std::size_t index : matches) {
-        std::cout << index + 1 << ": " << buffer_.find_lines(text)[index] << '\n';
+        std::cout << index + 1 << ": " << buffer_.lines()[index] << '\n';
     }
 }
 
