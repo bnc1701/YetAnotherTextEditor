@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "buffer.h"
+
 class Editor {
 public:
     Editor();
@@ -21,6 +23,7 @@ private:
     void quit();
 
     bool running_;
+    Buffer buffer_;
 };
 
 #endif

@@ -1,6 +1,4 @@
-#include "buffer.h"
-
-#include <iostream>
+#include "editor.h"
 
 int main() {
     Editor editor;
