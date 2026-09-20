@@ -49,6 +49,24 @@ void buffer::append_line(const std::string& line) {
     lines_.push_back(line);
 }
 
+// replace the content of a specific line by index
+void buffer::edit_line(std::size_t index, const std::string& line) {
+    if (index >= lines_.size()) {
+        return;
+    }
+
+    lines_[index] = line;
+}
+
+// remove a specific line by index
+void buffer::remove_line(std::size_t index) {
+    if (index >= lines_.size()) {
+        return;
+    }
+
+    lines_.erase(lines_.begin() + static_cast<std::ptrdiff_t>(index));
+}
+
 // return the active file path, if there is one
 std::string buffer::current_file() const {
     return current_file_;
@@ -62,6 +80,16 @@ void buffer::set_current_file(const std::string& path) {
 // expose the current lines for the editor
 const std::vector<std::string>& buffer::lines() const {
     return lines_;
+}
+
+// return the current number of lines
+std::size_t buffer::size() const {
+    return lines_.size();
+}
+
+// check whether the buffer has any content
+bool buffer::empty() const {
+    return lines_.empty();
 }
 
 // print the buffer contents with line numbers

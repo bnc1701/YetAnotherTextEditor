@@ -1,6 +1,7 @@
 #include "editor.h"
 
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 // create the editor and keep the state alive during the session
@@ -20,6 +21,8 @@ void editor::print_help() const {
     std::cout << "  :save          save the current file\n";
     std::cout << "  :save <file>   save to a specific file\n";
     std::cout << "  :print         print the current buffer\n";
+    std::cout << "  :edit <n> <text>   edit a line\n";
+    std::cout << "  :delete <n>    delete a line\n";
     std::cout << "  :new           clear the current buffer\n";
     std::cout << "  :q             quit the editor\n";
 }
@@ -97,6 +100,30 @@ void editor::handle_command(const std::string& input) {
         return;
     }
 
+    if (input.rfind(":edit ", 0) == 0) {
+        const std::string payload = input.substr(6);
+        const std::size_t space_pos = payload.find(' ');
+        if (space_pos == std::string::npos) {
+            std::cout << "usage: :edit <line> <text>\n";
+            return;
+        }
+
+        const std::string line_number = payload.substr(0, space_pos);
+        const std::string new_text = payload.substr(space_pos + 1);
+        edit_line(line_number, new_text);
+        return;
+    }
+
+    if (input.rfind(":delete ", 0) == 0) {
+        const std::string line_number = input.substr(8);
+        if (line_number.empty()) {
+            std::cout << "usage: :delete <line>\n";
+            return;
+        }
+        delete_line(line_number);
+        return;
+    }
+
     std::cout << "unknown command, type :help for available commands\n";
 }
 
@@ -142,6 +169,44 @@ void editor::print_buffer() const {
 void editor::create_new_buffer() {
     buffer_.clear();
     std::cout << "current buffer cleared\n";
+}
+
+// replace the content of a line by its number
+void editor::edit_line(const std::string& line_number, const std::string& new_text) {
+    std::size_t line_index = 0;
+    try {
+        line_index = std::stoull(line_number) - 1;
+    } catch (const std::exception&) {
+        std::cout << "invalid line number\n";
+        return;
+    }
+
+    if (line_index >= buffer_.size()) {
+        std::cout << "line out of range\n";
+        return;
+    }
+
+    buffer_.edit_line(line_index, new_text);
+    std::cout << "line updated\n";
+}
+
+// remove one line from the buffer by number
+void editor::delete_line(const std::string& line_number) {
+    std::size_t line_index = 0;
+    try {
+        line_index = std::stoull(line_number) - 1;
+    } catch (const std::exception&) {
+        std::cout << "invalid line number\n";
+        return;
+    }
+
+    if (line_index >= buffer_.size()) {
+        std::cout << "line out of range\n";
+        return;
+    }
+
+    buffer_.remove_line(line_index);
+    std::cout << "line removed\n";
 }
 
 // stop the editor loop

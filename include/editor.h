@@ -20,6 +20,8 @@ private:
     void save_current_file();
     void print_buffer() const;
     void create_new_buffer();
+    void edit_line(const std::string& line_number, const std::string& new_text);
+    void delete_line(const std::string& line_number);
     void quit();
 
     bool running_;
