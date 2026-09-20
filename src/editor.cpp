@@ -22,11 +22,12 @@ void editor::print_help() const {
     std::cout << "  :save                  save the current file\n";
     std::cout << "  :save <file>           save to a specific file\n";
     std::cout << "  :print                 print the current buffer\n";
+    std::cout << "  :append <text>         append text to the end\n";
     std::cout << "  :insert <n> <text>     insert a line before line n\n";
     std::cout << "  :edit <n> <text>       replace a line\n";
     std::cout << "  :delete <n>            delete a line\n";
     std::cout << "  :search <text>         find matching lines\n";
-    std::cout << "  :new                   clear the current buffer\n";
+    std::cout << "  :new [file]            clear the buffer and optionally set a file\n";
     std::cout << "  :q                     quit the editor\n";
 }
 
@@ -73,8 +74,12 @@ void editor::handle_command(const std::string& input) {
         return;
     }
 
-    if (input == ":new") {
-        create_new_buffer();
+    if (input.rfind(":new", 0) == 0) {
+        std::string path = input.length() > 4 ? input.substr(5) : "";
+        if (!path.empty() && path[0] == ' ') {
+            path = path.substr(1);
+        }
+        create_new_buffer(path);
         return;
     }
 
@@ -100,6 +105,16 @@ void editor::handle_command(const std::string& input) {
             return;
         }
         open_file(path);
+        return;
+    }
+
+    if (input.rfind(":append ", 0) == 0) {
+        const std::string text = input.substr(8);
+        if (text.empty()) {
+            std::cout << "usage: :append <text>\n";
+            return;
+        }
+        append_line(text);
         return;
     }
 
@@ -188,10 +203,22 @@ void editor::print_buffer() const {
     buffer_.print();
 }
 
-// clear the current working buffer and its file path
-void editor::create_new_buffer() {
+// clear the current working buffer and optionally set a file path
+void editor::create_new_buffer(const std::string& path) {
     buffer_.clear();
+    if (!path.empty()) {
+        buffer_.set_current_file(path);
+        std::cout << "new buffer ready for: " << path << '\n';
+        return;
+    }
+
     std::cout << "current buffer cleared\n";
+}
+
+// append a line to the end of the buffer
+void editor::append_line(const std::string& text) {
+    buffer_.append_line(text);
+    std::cout << "line appended\n";
 }
 
 // parse a positive one based line number
@@ -271,7 +298,7 @@ void editor::search_text(const std::string& text) const {
     }
 
     for (const std::size_t index : matches) {
-        std::cout << index + 1 << ": " << buffer_.lines()[index] << '\n';
+        std::cout << index + 1 << ": " << buffer_.find_lines(text)[index] << '\n';
     }
 }
 

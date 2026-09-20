@@ -52,17 +52,18 @@ this produces the binary `yetanothertexteditor` in the project root
 :save                  save the current file
 :save <file>           save to a specific file
 :print                 print the current buffer
+:append <text>         append text to the end
 :insert <n> <text>     insert a line before line n
 :edit <n> <text>       replace a line
 :delete <n>            delete a line
 :search <text>         find matching lines
-:new                   clear the current buffer
+:new [file]            clear the buffer and optionally set a file
 :q                     quit the editor
 ```
 
 any other non-empty line is treated as a new line of text to insert into the buffer
 
-line numbers start at one. `:insert 1 text` inserts before the first line. to append a line, use a number one larger than the current line count
+line numbers start at one. `:insert 1 text` inserts before the first line. to append a line, use `:append text`
 
 ## license
 

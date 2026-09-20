@@ -19,7 +19,8 @@ private:
     void save_file(const std::string& path);
     void save_current_file();
     void print_buffer() const;
-    void create_new_buffer();
+    void create_new_buffer(const std::string& path = "");
+    void append_line(const std::string& text);
     void insert_line(const std::string& line_number, const std::string& text);
     void edit_line(const std::string& line_number, const std::string& new_text);
     void delete_line(const std::string& line_number);
