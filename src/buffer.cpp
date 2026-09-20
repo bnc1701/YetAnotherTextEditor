@@ -66,6 +66,11 @@ const std::vector<std::string>& buffer::lines() const {
 
 // print the buffer contents with line numbers
 void buffer::print() const {
+    if (lines_.empty()) {
+        std::cout << "buffer is empty\n";
+        return;
+    }
+
     for (std::size_t i = 0; i < lines_.size(); ++i) {
         std::cout << i + 1 << ": " << lines_[i] << '\n';
     }
