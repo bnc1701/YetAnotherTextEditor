@@ -4,16 +4,16 @@
 #include <string>
 #include <vector>
 
-class Buffer {
+class buffer {
 public:
-    Buffer();
+    buffer();
 
     void clear();
-    bool loadFile(const std::string& path);
-    bool saveFile(const std::string& path) const;
-    void appendLine(const std::string& line);
-    std::string currentFile() const;
-    void setCurrentFile(const std::string& path);
+    bool load_file(const std::string& path);
+    bool save_file(const std::string& path) const;
+    void append_line(const std::string& line);
+    std::string current_file() const;
+    void set_current_file(const std::string& path);
     const std::vector<std::string>& lines() const;
     void print() const;
 

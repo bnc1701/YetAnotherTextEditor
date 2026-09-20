@@ -5,25 +5,25 @@
 
 #include "buffer.h"
 
-class Editor {
+class editor {
 public:
-    Editor();
+    editor();
 
     void run();
 
 private:
-    void printWelcomeMessage() const;
-    void printHelp() const;
-    void handleCommand(const std::string& input);
-    void openFile(const std::string& path);
-    void saveFile(const std::string& path) const;
-    void saveCurrentFile() const;
-    void printBuffer() const;
-    void createNewBuffer();
+    void print_welcome_message() const;
+    void print_help() const;
+    void handle_command(const std::string& input);
+    void open_file(const std::string& path);
+    void save_file(const std::string& path) const;
+    void save_current_file() const;
+    void print_buffer() const;
+    void create_new_buffer();
     void quit();
 
     bool running_;
-    Buffer buffer_;
+    buffer buffer_;
 };
 
 #endif

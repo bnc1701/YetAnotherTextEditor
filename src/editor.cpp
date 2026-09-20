@@ -1,19 +1,20 @@
 #include "editor.h"
 
-#include "buffer.h"
-
 #include <iostream>
 #include <string>
 
-Editor::Editor() : running_(true) {}
+// create the editor and keep the state alive during the session
+editor::editor() : running_(true), buffer_() {}
 
-void Editor::printWelcomeMessage() const {
-    std::cout << "YetAnotherTextEditor\n";
-    std::cout << "Type :help for commands.\n";
+// show the initial welcome text
+void editor::print_welcome_message() const {
+    std::cout << "yetanothertexteditor\n";
+    std::cout << "type :help for commands\n";
 }
 
-void Editor::printHelp() const {
-    std::cout << "Commands:\n";
+// list the available commands
+void editor::print_help() const {
+    std::cout << "commands:\n";
     std::cout << "  :help          display available commands\n";
     std::cout << "  :open <file>   open a file\n";
     std::cout << "  :save          save the current file\n";
@@ -23,10 +24,9 @@ void Editor::printHelp() const {
     std::cout << "  :q             quit the editor\n";
 }
 
-void Editor::run() {
-    printWelcomeMessage();
-
-    Buffer buffer;
+// main editor loop
+void editor::run() {
+    print_welcome_message();
 
     while (running_) {
         std::cout << "yetanothertexteditor> ";
@@ -41,20 +41,19 @@ void Editor::run() {
         }
 
         if (input.rfind(":", 0) == 0) {
-            handleCommand(input);
+            handle_command(input);
             continue;
         }
 
-        buffer.appendLine(input);
-        std::cout << "Inserted line.\n";
+        buffer_.append_line(input);
+        std::cout << "inserted line\n";
     }
 }
 
-void Editor::handleCommand(const std::string& input) {
-    Buffer buffer;
-
+// handle all command inputs starting with a colon
+void editor::handle_command(const std::string& input) {
     if (input == ":help") {
-        printHelp();
+        print_help();
         return;
     }
 
@@ -64,87 +63,88 @@ void Editor::handleCommand(const std::string& input) {
     }
 
     if (input == ":print") {
-        printBuffer();
+        print_buffer();
         return;
     }
 
     if (input == ":new") {
-        createNewBuffer();
+        create_new_buffer();
         return;
     }
 
     if (input == ":save") {
-        saveCurrentFile();
+        save_current_file();
         return;
     }
 
     if (input.rfind(":save ", 0) == 0) {
         std::string path = input.substr(6);
         if (path.empty()) {
-            std::cout << "Usage: :save <file>\n";
+            std::cout << "usage: :save <file>\n";
             return;
         }
-        saveFile(path);
+        save_file(path);
         return;
     }
 
     if (input.rfind(":open ", 0) == 0) {
         std::string path = input.substr(6);
         if (path.empty()) {
-            std::cout << "Usage: :open <file>\n";
+            std::cout << "usage: :open <file>\n";
             return;
         }
-        openFile(path);
+        open_file(path);
         return;
     }
 
-    std::cout << "Unknown command. Type :help for available commands.\n";
+    std::cout << "unknown command, type :help for available commands\n";
 }
 
-void Editor::openFile(const std::string& path) {
-    Buffer buffer;
-    if (!buffer.loadFile(path)) {
-        std::cout << "Error: could not open file: " << path << '\n';
+// open a file and load it into the current session buffer
+void editor::open_file(const std::string& path) {
+    if (!buffer_.load_file(path)) {
+        std::cout << "error: could not open file: " << path << '\n';
         return;
     }
 
-    std::cout << "Opened file: " << path << '\n';
-    buffer.print();
+    std::cout << "opened file: " << path << '\n';
+    buffer_.print();
 }
 
-void Editor::saveFile(const std::string& path) const {
-    Buffer buffer;
-    if (!buffer.saveFile(path)) {
-        std::cout << "Error: could not save file: " << path << '\n';
+// save the current buffer to a specific path
+void editor::save_file(const std::string& path) const {
+    if (!buffer_.save_file(path)) {
+        std::cout << "error: could not save file: " << path << '\n';
         return;
     }
 
-    std::cout << "Saved file: " << path << '\n';
+    std::cout << "saved file: " << path << '\n';
 }
 
-void Editor::saveCurrentFile() const {
-    Buffer buffer;
-    std::string current_file = buffer.currentFile();
+// save the active file if one was opened earlier
+void editor::save_current_file() const {
+    std::string current_file = buffer_.current_file();
     if (current_file.empty()) {
-        std::cout << "No file is currently open. Use :save <file>\n";
+        std::cout << "no file is currently open, use :save <file>\n";
         return;
     }
 
-    saveFile(current_file);
+    save_file(current_file);
 }
 
-void Editor::printBuffer() const {
-    Buffer buffer;
-    buffer.print();
+// print the current buffer content
+void editor::print_buffer() const {
+    buffer_.print();
 }
 
-void Editor::createNewBuffer() {
-    Buffer buffer;
-    buffer.clear();
-    std::cout << "Current buffer cleared.\n";
+// clear the current working buffer
+void editor::create_new_buffer() {
+    buffer_.clear();
+    std::cout << "current buffer cleared\n";
 }
 
-void Editor::quit() {
+// stop the editor loop
+void editor::quit() {
     running_ = false;
-    std::cout << "Goodbye.\n";
+    std::cout << "goodbye\n";
 }

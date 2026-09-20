@@ -1,8 +1,8 @@
-# YetAnotherTextEditor
+# yetanothertexteditor
 
-A tiny terminal text editor written in C++.
+a tiny terminal text editor written in c++
 
-## What it does
+## what it does
 
 - open an existing file
 - create a new empty buffer
@@ -11,10 +11,10 @@ A tiny terminal text editor written in C++.
 - save the file
 - quit the editor
 
-## Project structure
+## project structure
 
 ```text
-YetAnotherTextEditor/
+yetanothertexteditor/
 ├── src/
 │   ├── main.cpp
 │   ├── editor.cpp
@@ -22,27 +22,27 @@ YetAnotherTextEditor/
 ├── include/
 │   ├── editor.h
 │   └── buffer.h
-├── Makefile
-├── README.md
+├── makefile
+├── readme.md
 ├── .gitignore
-└── LICENSE
+└── license
 ```
 
-## Build
+## build
 
 ```bash
 make
 ```
 
-This produces the binary `yetanothertexteditor` in the project root.
+this produces the binary `yetanothertexteditor` in the project root
 
-## Run
+## run
 
 ```bash
 ./yetanothertexteditor
 ```
 
-## Commands
+## commands
 
 ```text
 :help          display available commands
@@ -54,8 +54,8 @@ This produces the binary `yetanothertexteditor` in the project root.
 :q             quit the editor
 ```
 
-Any other line is treated as a new line of text to insert into the buffer.
+any other line is treated as a new line of text to insert into the buffer
 
-## License
+## license
 
-MIT License.
+mit license
