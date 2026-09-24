@@ -92,6 +92,11 @@ std::vector<std::size_t> buffer::find_lines(const std::string& text) const {
     return matches;
 }
 
+// expose the buffer lines for read only access
+const std::vector<std::string>& buffer::lines() const {
+    return lines_;
+}
+
 // return the active file path, if there is one
 std::string buffer::current_file() const {
     return current_file_;

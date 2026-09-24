@@ -1,5 +1,5 @@
-#ifndef BUFFER_H
-#define BUFFER_H
+#ifndef buffer_h
+#define buffer_h
 
 #include <cstddef>
 #include <string>
@@ -17,6 +17,7 @@ public:
     bool edit_line(std::size_t index, const std::string& line);
     bool remove_line(std::size_t index);
     std::vector<std::size_t> find_lines(const std::string& text) const;
+    const std::vector<std::string>& lines() const;
     std::string current_file() const;
     void set_current_file(const std::string& path);
     std::size_t size() const;

@@ -1,5 +1,5 @@
-#ifndef EDITOR_H
-#define EDITOR_H
+#ifndef editor_h
+#define editor_h
 
 #include <string>
 
